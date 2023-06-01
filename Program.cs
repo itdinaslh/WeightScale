@@ -13,6 +13,8 @@ public class PortScale
     static HubConnection connection;
     static SerialPort _serialPort;
 
+    static string message;
+
     public static async Task Main()
     {
         connection = new HubConnectionBuilder()
@@ -23,7 +25,7 @@ public class PortScale
         await OpenSignalR();
 
         string name;
-        string message;
+        
         Thread readThread = null;
         StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
         try
@@ -105,12 +107,13 @@ public class PortScale
         {
             try
             {
-                string message = _serialPort.ReadLine();
+                string readData = _serialPort.ReadLine();
+                // _serialPort.DataReceived += 
                 int value = 0;
                 string data = "";
-                if (message is not null || message != "" && message.Length > 9)
+                if (readData is not null || readData != "" && readData.Length > 9)
                 {
-                    data = message.Substring(9, 5);
+                    data = readData.Substring(9, 5);
                     if (data.Substring(0, 1) != "0")
                     {
                         int.TryParse(data, out value);
@@ -158,6 +161,12 @@ public class PortScale
                 //}
                 Console.WriteLine(ex);
             }
+        }
+    }
+
+    private void OnDataReceived() {
+        while (_serialPort.BytesToRead > 0) {
+            message += _serialPort.ReadByte();
         }
     }
 
