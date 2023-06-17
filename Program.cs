@@ -40,7 +40,7 @@ public class PortScale
 
         // Allow the user to set the appropriate properties.
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-            _serialPort.PortName = "COM4";
+            _serialPort.PortName = "COM5";
         } else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
             _serialPort.PortName = "/dev/ttyUSB0";
         }
@@ -77,20 +77,20 @@ public class PortScale
 
         Console.WriteLine("Type QUIT to exit");
 
-        while (_continue)
-        {
-            message = Console.ReadLine();
+        // while (_continue)
+        // {
+        //     message = Console.ReadLine();
 
-            if (stringComparer.Equals("quit", message))
-            {
-                _continue = false;
-            }
-            else
-            {
-                _serialPort.WriteLine(
-                    String.Format("<{0}>: {1}", name, message));
-            }
-        }
+        //     if (stringComparer.Equals("quit", message))
+        //     {
+        //         _continue = false;
+        //     }
+        //     else
+        //     {
+        //         _serialPort.WriteLine(
+        //             String.Format("<{0}>: {1}", name, message));
+        //     }
+        // }
 
         //Console.WriteLine("Push data to server...");
         //Console.WriteLine("Press CTRL + C to exit");
@@ -141,6 +141,7 @@ public class PortScale
                 try
                 {
                     await connection.InvokeAsync("Timbangan1", val);
+                    // Console.WriteLine(val);
                     //Console.WriteLine(val);
                     //Console.WriteLine(val);
                 }
